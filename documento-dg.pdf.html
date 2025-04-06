@@ -1,0 +1,387 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Site oficial do Fortaleza Esporte Clube, com informações sobre história, títulos, partidas e galeria de fotos.">
+    <title>Fortaleza Esporte Clube</title>
+    <link rel="stylesheet" href="style.css">
+    <!-- Adicionando fontes modernas -->
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&family=Oswald:wght@400;700&display=swap" rel="stylesheet">
+<style>
+        /* Reset básico */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* Corpo */
+        body {
+            background: linear-gradient(135deg, #0033A0, #B20000);
+            color: white;
+            font-family: 'Roboto', sans-serif;
+            text-align: center;
+            line-height: 1.6;
+        }
+
+        /* Splash Screen */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                to right,
+                #0033A0 40%, /* Azul - Coluna maior à esquerda */
+                #FFFFFF 20%, /* Branco - Coluna menor no meio */
+                #B20000 40%  /* Vermelho - Coluna maior à direita */
+            ); /* Azul, branco e vermelho em colunas verticais */
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .splash-content {
+            text-align: center;
+            color: white;
+            background: rgba(0, 0, 0, 0.6); /* Fundo escuro translúcido para o texto */
+            padding: 20px;
+            border-radius: 10px;
+            animation: fadeIn 1.5s ease-in-out;
+        }
+
+        .splash-content h1 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            text-shadow: 0px 0px 10px rgba(0, 0, 0, 0.8); /* Mantém o destaque */
+            color: white; /* Define o texto como branco */
+        }
+
+        .splash-content button {
+            padding: 10px 20px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: #0033A0;
+            background: #FFD700;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .splash-content button:hover {
+            background: white;
+            color: #0033A0;
+        }
+
+        /* Animação de fade-in */
+        @keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        /* Cabeçalhos */
+        h1, h2 {
+            font-family: 'Oswald', sans-serif;
+            text-transform: uppercase;
+            color: #FFD700;
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+        }
+
+        h1 {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+        }
+
+        /* Cabeçalho */
+        .main-header {
+            background: #0033A0;
+            padding: 20px 0;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+        }
+
+        .header-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+
+        .site-title {
+            font-size: 2rem;
+            font-weight: bold;
+            color: white;
+            text-shadow: 0px 0px 10px rgba(255, 255, 255, 0.8);
+        }
+
+        /* Navegação */
+        .nav-menu {
+            list-style: none;
+            display: flex;
+            gap: 20px;
+        }
+
+        .nav-menu a {
+            color: white;
+            font-size: 1rem;
+            text-decoration: none;
+            font-weight: bold;
+            padding: 10px 15px;
+            border-radius: 5px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .nav-menu a:hover {
+            background: white;
+            color: #0033A0;
+        }
+
+        /* Seções principais */
+        .content-section {
+            padding: 50px 20px;
+            margin: 20px auto;
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 10px;
+            box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.3);
+            max-width: 1000px;
+        }
+
+        .content-section p {
+            font-size: 1.2rem;
+            color: white;
+        }
+
+        /* Formulário de Login */
+        .login-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            max-width: 400px;
+            margin: 0 auto;
+            text-align: left;
+        }
+
+        .login-form label {
+            font-size: 1rem;
+            color: white;
+        }
+
+        .login-form input {
+            padding: 10px;
+            font-size: 1rem;
+            border: 1px solid #FFD700;
+            border-radius: 5px;
+            outline: none;
+        }
+
+        .login-form input:focus {
+            border-color: #0033A0;
+            box-shadow: 0px 0px 5px #0033A0;
+        }
+
+        .login-form button {
+            padding: 10px;
+            font-size: 1rem;
+            font-weight: bold;
+            color: white;
+            background: #0033A0;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .login-form button:hover {
+            background: #FFD700;
+            color: #0033A0;
+        }
+
+        /* Porta do Portal */
+        #portal {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            max-width: 800px;
+            background: rgba(0, 0, 0, 0.9);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            box-shadow: 0px 4px 15px rgba(0, 0, 0, 0.5);
+            z-index: 1000;
+            text-align: center;
+            overflow-y: auto;
+            max-height: 80%;
+        }
+
+        #portal h2 {
+            font-size: 2rem;
+            margin-bottom: 20px;
+            color: #FFD700;
+        }
+
+        #portal h3 {
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            color: #FFD700;
+        }
+
+        #portal ul {
+            list-style: none;
+            padding: 0;
+            margin: 0;
+        }
+
+        #portal ul li {
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            color: white;
+            text-align: left;
+            padding-left: 20px;
+            position: relative;
+        }
+
+        #portal ul li::before {
+            content: "⚽";
+            position: absolute;
+            left: 0;
+            font-size: 1.5rem;
+            color: #FFD700;
+        }
+    </style>
+<script>
+        // Função para ocultar a splash screen
+        function closeSplashScreen() {
+            document.getElementById('splash-screen').style.display = 'none';
+        }
+
+        // Função para validar login e exibir a "porta"
+        function validateLogin(event) {
+            event.preventDefault(); // Evita o envio do formulário
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            if (username === 'amanda' && password === '032019') { // Novo usuário e senha
+                document.getElementById('login-section').style.display = 'none';
+                document.getElementById('portal').style.display = 'block'; // Exibe a porta
+            } else {
+                alert('Usuário ou senha incorretos!');
+            }
+        }
+
+        // Função para fechar a porta e reexibir o login
+        function closePortal() {
+            document.getElementById('portal').style.display = 'none'; // Oculta a porta
+            document.getElementById('login-section').style.display = 'block'; // Exibe novamente a seção de login
+            document.getElementById('login-section').scrollIntoView({ behavior: 'smooth' }); // Rola suavemente até o login
+        }
+    </script>
+</head>
+<body>
+<!-- Splash Screen -->
+    <div id="splash-screen">
+        <div class="splash-content">
+            <h1>Bem-vindo ao Fortaleza Esporte Clube</h1>
+            <button onclick="closeSplashScreen()">Entrar</button>
+        </div>
+    </div>
+
+    <!-- Conteúdo Principal -->
+    <header class="main-header">
+        <div class="header-container">
+            <h1 class="site-title">Fortaleza Esporte Clube</h1>
+            <nav>
+                <ul class="nav-menu">
+                    <li><a href="#historia">História</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+    <main>
+        <section id="historia" class="content-section">
+            <h2>História do Fortaleza</h2>
+            <p>
+                O Fortaleza Esporte Clube foi fundado em 18 de outubro de 1918, na cidade de Fortaleza, Ceará. O clube nasceu da paixão de um grupo de jovens liderados por Alcides Santos, que sonhavam em criar uma equipe de futebol que representasse a cidade e o estado. Desde o início, o Fortaleza se destacou pela sua organização e pela paixão de sua torcida, que rapidamente se tornou uma das mais vibrantes do Brasil.
+            </p>
+            <p>
+                Nos primeiros anos, o Fortaleza enfrentou desafios comuns a clubes em formação, mas logo começou a se destacar no cenário local. Em 1920, o clube conquistou seu primeiro título estadual, marcando o início de uma trajetória de sucesso no Campeonato Cearense. Ao longo das décadas, o Fortaleza consolidou sua posição como uma das maiores forças do futebol cearense, acumulando dezenas de títulos estaduais.
+            </p>
+            <p>
+                Na década de 1960, o Fortaleza começou a ganhar destaque no cenário nacional. Em 1960, o clube foi vice-campeão da Taça Brasil, um dos torneios mais importantes da época, consolidando sua reputação como uma equipe competitiva e respeitada. Esse período marcou o início de uma era de grandes confrontos contra equipes de todo o Brasil.
+            </p>
+            <p>
+                Após altos e baixos nas décadas seguintes, o Fortaleza viveu um renascimento no início dos anos 2000. O clube voltou a disputar a Série A do Campeonato Brasileiro e conquistou o título da Série B em 2018, sob o comando do técnico Rogério Ceni. Esse título foi um marco na história do clube, simbolizando sua volta à elite do futebol brasileiro.
+            </p>
+            <p>
+                Em 2019, o Fortaleza conquistou a Copa do Nordeste pela primeira vez, um feito histórico que consolidou sua posição como uma das maiores equipes do Nordeste. O clube repetiu o feito em 2022, mostrando sua força na região. Além disso, o Fortaleza tem se destacado em competições internacionais, como a Copa Sul-Americana e a Libertadores, levando o nome do clube e do estado do Ceará para o cenário global.
+            </p>
+            <p>
+                Atualmente, o Fortaleza é reconhecido como um dos clubes mais organizados do Brasil, com uma gestão profissional e uma torcida apaixonada que lota a Arena Castelão em todos os jogos. O "Leão do Pici", como é carinhosamente chamado, continua a escrever sua história com garra, determinação e amor pelo futebol.
+            </p>
+        </section>
+        
+        <!-- Seção de Login -->
+        <section id="login-section" class="content-section">
+            <h2>Login</h2>
+            <form class="login-form" onsubmit="validateLogin(event)">
+                <label for="username">Usuário:</label>
+                <input type="text" id="username" name="username" placeholder="Digite seu usuário" required>
+                <label for="password">Senha:</label>
+                <input type="password" id="password" name="password" placeholder="Digite sua senha" required>
+                <button type="submit">Entrar</button>
+            </form>
+        </section>
+
+        <!-- Porta com Partidas e Títulos -->
+        <section id="portal" class="content-section" style="display: none;">
+            <h2>Bem-vindo ao Portal do Fortaleza</h2>
+            <div class="portal-content">
+                <h3>🏆 Títulos do Fortaleza</h3>
+                <ul>
+                    <li>🏆 Campeonato Cearense: 45 vezes</li>
+                    <li>🏆 Copa do Nordeste: 2 vezes</li>
+                    <li>🏆 Série B do Brasileirão: 1 vez</li>
+                    <li>🏆 Taça dos Campeões Cearenses: 3 vezes</li>
+                    <li>🏆 Torneio Norte-Nordeste: 1 vez</li>
+                    <li>🏆 Copa Cidade de Natal: 1 vez</li>
+                    <li>🏆 Copa dos Campeões Cearenses: 1 vez</li>
+                </ul>
+
+                <h3>📅 Partidas do Ano</h3>
+                <ul>
+                    <li>Fortaleza 2 x 1 Bahia - 05/03/2025</li>
+                    <li>Fortaleza 1 x 1 São Paulo - 12/03/2025</li>
+                    <li>Fortaleza 3 x 0 Sport - 25/03/2025</li>
+                    <li>Fortaleza x Ceará - 10/04/2025</li>
+                    <li>Fortaleza x Flamengo - 15/04/2025</li>
+                    <li>Fortaleza x Palmeiras - 20/04/2025</li>
+                </ul>
+
+                <!-- Botão para fechar a porta -->
+                <button onclick="closePortal()">Fechar</button>
+            </div>
+        </section>
+    </main>
+    <footer class="main-footer">
+        <p>&copy; 2025 Fortaleza Esporte Clube. Todos os direitos reservados.</p>
+    </footer>
+</body>
+</html>

@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=width=device-width, initial-scale=1.0">
+    <title>Restaurante Nordestino 🌵🍛</title>
+    <link rel="stylesheet" href="/styles.css">
+    <style>
+        body {
+            font-family: 'Poppins', Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            text-align: center;
+        }
+
+        /* Splash Screen */
+        #splash-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #1f1c2c, #928dab); /* Gradiente futurista */
+            color: white;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            font-size: 32px;
+            font-weight: bold;
+            text-transform: uppercase;
+            z-index: 9999;
+            overflow: hidden;
+        }
+
+        #splash-screen h1 {
+            font-size: 50px;
+            margin-bottom: 20px;
+            font-family: 'Poppins', Arial, sans-serif;
+            letter-spacing: 3px; /* Espaçamento entre letras */
+            background: linear-gradient(90deg, #28a745, #007bff, #ffc107); /* Gradiente verde, azul e amarelo */
+            background-size: 300%;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            animation: gradient-animation 3s infinite; /* Animação do gradiente */
+            text-shadow: 2px 2px 10px rgba(0, 0, 0, 0.5); /* Sombra no texto */
+        }
+
+        .splash-description {
+            font-size: 20px;
+            font-weight: normal;
+            margin-bottom: 30px;
+            max-width: 80%;
+            line-height: 1.6;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #ffffff;
+            text-shadow: 1px 1px 6px rgba(255, 255, 255, 0.3); /* Sombra suave */
+            animation: fade-in 2s ease-in-out; /* Animação de fade-in */
+        }
+
+        #enter-button {
+            background: linear-gradient(90deg, #00c6ff, #0072ff); /* Gradiente azul vibrante */
+            color: white;
+            border: none;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease, box-shadow 0.3s ease;
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.2); /* Sombra no botão */
+            animation: bounce 2s infinite; /* Animação de bounce */
+        }
+
+        #enter-button:hover {
+            background: linear-gradient(90deg, #0072ff, #00c6ff); /* Gradiente invertido no hover */
+            transform: scale(1.1); /* Leve aumento no hover */
+            box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.3); /* Sombra mais intensa no hover */
+        }
+
+        .contact-info {
+            margin-top: 30px; /* Espaçamento acima das informações de contato */
+            font-size: 18px;
+            font-family: 'Roboto', Arial, sans-serif;
+            color: #ffffff; /* Texto branco */
+            text-shadow: 1px 1px 6px rgba(255, 255, 255, 0.3); /* Sombra suave */
+            animation: fade-in 2s ease-in-out; /* Animação de fade-in */
+        }
+
+        .contact-item {
+            margin: 10px 0; /* Espaçamento entre os itens de contato */
+            font-size: 18px;
+            font-weight: normal;
+            line-height: 1.6;
+        }
+
+        .draggable-emoji {
+            cursor: grab;
+            transition: transform 0.3s ease; /* Transição suave para o retorno */
+        }
+
+        .draggable-emoji:active {
+            cursor: grabbing;
+            opacity: 0.7; /* Reduz a opacidade enquanto arrasta */
+        }
+
+        /* Estilo inicial para os elementos da splash screen */
+        #splash-screen h1,
+        .splash-description,
+        #enter-button,
+        .contact-info {
+            transform: translateY(30px); /* Começa deslocado para baixo */
+            opacity: 0; /* Invisível inicialmente */
+            transition: transform 0.6s ease, opacity 0.6s ease; /* Transição suave */
+        }
+
+        /* Animações */
+        @keyframes gradient-animation {
+            0% {
+                background-position: 0%;
+            }
+            50% {
+                background-position: 100%;
+            }
+            100% {
+                background-position: 0%;
+            }
+        }
+
+        @keyframes fade-in {
+            from {
+                opacity: 0;
+            }
+            to {
+                opacity: 1;
+            }
+        }
+
+        @keyframes bounce {
+            0%, 20%, 50%, 80%, 100% {
+                transform: translateY(0);
+            }
+            40% {
+                transform: translateY(-10px);
+            }
+            60% {
+                transform: translateY(-5px);
+            }
+        }
+
+        /* Modal */
+        .modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro com transparência */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: linear-gradient(135deg, #f39c12, #e74c3c); /* Gradiente vibrante */
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            max-height: 80vh; /* Limita a altura do modal a 80% da altura da tela */
+            overflow-y: auto; /* Habilita a rolagem vertical */
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3); /* Sombra moderna */
+            text-align: left;
+            animation: slideIn 0.3s ease-out; /* Animação de entrada */
+            color: white; /* Texto branco para contraste */
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateY(-50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateY(0);
+                opacity: 1;
+            }
+        }
+
+        .modal-content h2 {
+            text-align: center;
+            color: #ffffff; /* Branco */
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra no texto */
+        }
+
+        .modal-content label {
+            display: flex;
+            align-items: center; /* Alinha os itens verticalmente */
+            justify-content: space-between; /* Espaço entre o texto e o campo */
+            margin: 10px 0;
+            font-size: 16px;
+            color: #ffffff; /* Texto branco */
+        }
+
+        .modal-content .itens {
+            margin-bottom: 20px; /* Espaçamento entre categorias */
+        }
+
+        .modal-content input[type="text"],
+        .modal-content input[type="tel"] {
+            width: 100%;
+            padding: 12px;
+            margin-bottom: 15px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            transition: border-color 0.3s ease;
+        }
+
+        .modal-content input[type="text"]:focus,
+        .modal-content input[type="tel"]:focus {
+            border-color: #f39c12; /* Laranja vibrante no foco */
+            outline: none;
+        }
+
+        .modal-content input[type="number"] {
+            width: 60px; /* Largura ajustada */
+            padding: 8px;
+            margin-left: 20px; /* Espaçamento entre o item e o campo de quantidade */
+            border: 1px solid #ccc;
+            border-radius: 8px; /* Bordas arredondadas */
+            font-size: 14px;
+            text-align: center; /* Centraliza o texto */
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .modal-content input[type="number"]:focus {
+            border-color: #f39c12; /* Laranja vibrante no foco */
+            box-shadow: 0px 0px 8px rgba(243, 156, 18, 0.5); /* Efeito de brilho no foco */
+            outline: none;
+        }
+
+        .modal-content .itens label {
+            display: block;
+            margin: 8px 0;
+            font-size: 16px;
+            color: #ffffff; /* Texto branco */
+        }
+
+        #finalizar-pedido {
+            background: linear-gradient(90deg, #28a745, #218838); /* Gradiente verde */
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            font-size: 18px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 30px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 20px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        #finalizar-pedido:hover {
+            background: linear-gradient(90deg, #218838, #28a745); /* Gradiente invertido no hover */
+            transform: scale(1.05); /* Leve aumento no hover */
+        }
+
+        #fechar-modal {
+            background: linear-gradient(90deg, #dc3545, #c82333); /* Gradiente vermelho */
+            color: white;
+            border: none;
+            padding: 12px 30px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 30px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: 10px;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        #fechar-modal:hover {
+            background: linear-gradient(90deg, #c82333, #dc3545); /* Gradiente invertido no hover */
+            transform: scale(1.05); /* Leve aumento no hover */
+        }
+
+        #finalizar-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.6); /* Fundo escuro com transparência */
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        #finalizar-modal .modal-content {
+            background: linear-gradient(135deg, #28a745, #218838); /* Gradiente verde */
+            padding: 30px;
+            border-radius: 16px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            color: white;
+            box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3); /* Sombra moderna */
+        }
+
+        #finalizar-modal h2 {
+            font-size: 24px;
+            margin-bottom: 20px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3); /* Sombra no texto */
+        }
+
+        #finalizar-modal p {
+            font-size: 16px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+        }
+
+        #finalizar-modal p:nth-child(3) {
+            font-weight: bold;
+            color: #ffc107; /* Cor amarela para destaque */
+        }
+
+        .finalizar-opcoes {
+            display: flex;
+            justify-content: space-around; /* Espaça os botões uniformemente */
+            margin-top: 20px;
+        }
+
+        .finalizar-opcoes button {
+            background: linear-gradient(90deg, #007bff, #0056b3); /* Gradiente azul */
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            font-size: 16px;
+            font-weight: bold;
+            text-transform: uppercase;
+            border-radius: 30px;
+            cursor: pointer;
+            transition: transform 0.3s ease, background 0.3s ease;
+            box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+        }
+
+        .finalizar-opcoes button:hover {
+            background: linear-gradient(90deg, #0056b3, #007bff); /* Gradiente invertido no hover */
+            transform: scale(1.05); /* Leve aumento no hover */
+        }
+
+        #cancelar-pedido {
+            background: linear-gradient(90deg, #dc3545, #c82333); /* Gradiente vermelho */
+        }
+
+        #cancelar-pedido:hover {
+            background: linear-gradient(90deg, #c82333, #dc3545); /* Gradiente invertido no hover */
+        }
+
+        /* Responsividade para dispositivos móveis */
+        @media (max-width: 768px) {
+            body {
+                font-size: 14px; /* Reduz o tamanho da fonte */
+                padding: 10px;
+            }
+
+            #splash-screen h1 {
+                font-size: 28px; /* Ajusta o tamanho do título */
+                letter-spacing: 1px; /* Reduz o espaçamento entre letras */
+            }
+
+            .splash-description {
+                font-size: 16px; /* Ajusta o tamanho da descrição */
+                max-width: 90%; /* Reduz a largura máxima */
+            }
+
+            #enter-button {
+                padding: 10px 20px; /* Reduz o tamanho do botão */
+                font-size: 16px;
+            }
+
+            .contact-info {
+                font-size: 14px; /* Ajusta o tamanho das informações de contato */
+            }
+
+            .modal-content {
+                width: 95%; /* Ajusta a largura do modal */
+                padding: 20px; /* Reduz o padding */
+            }
+
+            .modal-content h2 {
+                font-size: 20px; /* Ajusta o tamanho do título do modal */
+            }
+
+            .modal-content input[type="text"],
+            .modal-content input[type="tel"],
+            .modal-content input[type="number"] {
+                font-size: 12px; /* Reduz o tamanho da fonte dos inputs */
+                padding: 10px; /* Ajusta o padding */
+            }
+
+            .modal-content button {
+                font-size: 14px; /* Ajusta o tamanho dos botões */
+                padding: 10px 15px;
+            }
+
+            .finalizar-opcoes {
+                flex-direction: column; /* Empilha os botões verticalmente */
+            }
+
+            .finalizar-opcoes button {
+                margin-bottom: 10px; /* Adiciona espaçamento entre os botões */
+            }
+
+            .itens label {
+                font-size: 14px; /* Ajusta o tamanho do texto dos itens */
+            }
+
+            .itens input[type="number"] {
+                width: 40px; /* Reduz a largura dos campos de quantidade */
+            }
+        }
+
+        @media (max-width: 480px) {
+            #splash-screen h1 {
+                font-size: 24px; /* Ajusta ainda mais o tamanho do título */
+            }
+
+            .splash-description {
+                font-size: 14px; /* Ajusta o tamanho da descrição */
+            }
+
+            #enter-button {
+                font-size: 14px; /* Ajusta o tamanho do botão */
+            }
+
+            .modal-content {
+                padding: 15px; /* Reduz o padding do modal */
+            }
+
+            .modal-content h2 {
+                font-size: 18px; /* Ajusta o tamanho do título do modal */
+            }
+
+            .modal-content input[type="text"],
+            .modal-content input[type="tel"],
+            .modal-content input[type="number"] {
+                font-size: 10px; /* Reduz ainda mais o tamanho da fonte */
+            }
+
+            .modal-content button {
+                font-size: 12px; /* Ajusta o tamanho dos botões */
+            }
+        }
+
+        /* Animação de entrada para os itens do cardápio */
+        .itens {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .itens label {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all 0.5s ease;
+            background: linear-gradient(135deg, #f39c12, #e74c3c); /* Gradiente vibrante */
+            padding: 10px;
+            border-radius: 8px;
+            margin-bottom: 10px;
+            box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Sombra */
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+        }
+
+        .itens label:hover {
+            transform: scale(1.05); /* Leve aumento no hover */
+            box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.3); /* Sombra mais intensa */
+            background: linear-gradient(135deg, #e74c3c, #f39c12); /* Gradiente invertido */
+        }
+
+        .itens input[type="number"] {
+            width: 60px;
+            padding: 8px;
+            border: 1px solid #ccc;
+            border-radius: 8px;
+            font-size: 14px;
+            text-align: center;
+            transition: border-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        .itens input[type="number"]:focus {
+            border-color: #f39c12;
+            box-shadow: 0px 0px 8px rgba(243, 156, 18, 0.5); /* Efeito de brilho no foco */
+            outline: none;
+        }
+
+        .itens label input[type="checkbox"]:checked + input[type="number"] {
+            border-color: #28a745; /* Verde */
+            box-shadow: 0px 0px 8px rgba(40, 167, 69, 0.5);
+        }
+
+        /* Animação de entrada em cascata */
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(20px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .categoria-titulo {
+            font-size: 20px;
+            font-weight: bold;
+            margin-top: 20px;
+            color: #f39c12;
+            text-align: left;
+        }
+
+        input:focus {
+            outline: 2px solid #007bff;
+            outline-offset: 2px;
+        }
+
+        #contador-itens {
+            margin-top: 20px;
+            font-size: 20px; /* Aumenta o tamanho da fonte */
+            font-weight: bold; /* Deixa o texto em negrito */
+            color: #28a745; /* Verde para destacar */
+            text-shadow: 1px 1px 4px rgba(0, 0, 0, 0.3); /* Sombra para dar profundidade */
+            background: linear-gradient(90deg, #f39c12, #e74c3c); /* Gradiente vibrante */
+            padding: 10px 20px; /* Adiciona espaçamento interno */
+            border-radius: 8px; /* Bordas arredondadas */
+            display: inline-block; /* Faz com que o texto tenha um fundo ajustado */
+            animation: pulse 1.5s infinite; /* Animação para chamar atenção */
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.1); /* Leve aumento no tamanho */
+            }
+        }
+    </style>
+</head>
+<body>
+<div id="splash-screen">
+    <h1>Seja bem-vindo ao Restaurante Nordestino 🌵🍛</h1>
+    <p class="splash-description">Descubra os sabores autênticos do Nordeste com muita tradição e carinho!</p>
+    <button id="enter-button">Entrar</button>
+    <div class="contact-info">
+        <p class="contact-item">
+            <span class="draggable-emoji" draggable="true">📍</span> Endereço: Rua do Sabor, 123 - Centro
+        </p>
+        <p class="contact-item">
+            <span class="draggable-emoji" draggable="true">📧</span> E-mail: contato@restaurantenordestino.com
+        </p>
+        <p class="contact-item">
+            <span class="draggable-emoji" draggable="true">📞</span> Telefone: (11) 1234-5678
+        </p>
+    </div>
+</div>
+<div id="pedido-modal" class="modal">
+    <div class="modal-content">
+        <h2>🛒 Fazer Pedido</h2>
+        <form id="pedido-form">
+            <label for="nome">Nome:</label>
+            <input type="text" id="nome" name="nome" placeholder="Digite seu nome" required>
+
+            <label for="telefone">Telefone:</label>
+            <input type="tel" id="telefone" name="telefone" placeholder="Digite seu telefone" required>
+
+            <label for="endereco">Endereço:</label>
+            <input type="text" id="endereco" name="endereco" placeholder="Digite seu endereço" required>
+
+            <h3>Pratos Principais</h3>
+            <div class="itens">
+                <label>
+                    <input type="checkbox" name="item" value="Baião de Dois"> 🍛 Baião de Dois
+                    <input type="number" name="quantidade-baião" min="1" max="99" placeholder="Qtd" style="width: 50px; margin-left: 10px;">
+                </label>
+                <label>
+                    <input type="checkbox" name="item" value="Carne de Sol"> 🥩 Carne de Sol
+                    <input type="number" name="quantidade-carne" min="1" max="99" placeholder="Qtd" style="width: 50px; margin-left: 10px;">
+                </label>
+                <label>
+                    <input type="checkbox" name="item" value="Moqueca"> 🥘 Moqueca
+                    <input type="number" name="quantidade-moqueca" min="1" max="99" placeholder="Qtd" style="width: 50px; margin-left: 10px;">
+                </label>
+                <label>
+                    <input type="checkbox" name="item" value="Cuscuz Nordestino"> 🥖 Cuscuz Nordestino
+                    <input type="number" name="quantidade-cuscuz" min="1" max="99" placeholder="Qtd" style="width: 50px; margin-left: 10px;">
+                </label>
+                <label>
+                    <input type="checkbox" name="item" value="Peixe Frito"> 🐟 Peixe Frito
+                    <input type="number" name="quantidade-peixe" min="1" max="99" placeholder="Qtd" style="width: 50px; margin-left: 10px;">
+                </label>
+                <label>
+                    <input type="checkbox" name="item" value="Feijoada"> 🍛 Feijoada
+                    <input type="number" name="quantidade-feijoada" min="1" max="99" placeholder="Qtd" style="width: 50px; margin-left: 10px;">
+                </label>
+                <label>
+                    <input type="checkbox" name="item" value="Frango Assado"> 🍗 Frango Assado
+                    <input type="number" name="quantidade-frango" min="1" max="99" placeholder="Qtd" style="width: 50px; margin-left: 10px;">
+                </label>
+                <label>
+                    <input type="checkbox" name="item" value="Arroz de Leite"> 🍚 Arroz de Leite
+                    <input type="number" name="quantidade-arroz" min="1" max="99" placeholder="Qtd" style="width: 50px; margin-left: 10px;">
+                </label>
+                <label>
+                    <input type="checkbox" name="item" value="Macaxeira com Carne"> 🥔 Macaxeira com Carne
+                    <input type="number" name="quantidade-macaxeira" min="1" max="99" placeholder="Qtd" style="width: 50px; margin-left: 10px;">
+                </label>
+            </div>
+
+            <div id="contador-itens" style="margin-top: 20px; font-size: 18px; font-weight: bold; color: #f39c12;">
+                Itens Selecionados: 0
+            </div>
+
+            <button type="submit" id="finalizar-pedido">Fazer Pedido</button>
+        </form>
+        <button id="fechar-modal">Fechar</button>
+    </div>
+</div>
+<div id="finalizar-modal" class="modal">
+    <div class="modal-content">
+        <h2>🎉 Pedido Finalizado!</h2>
+        <p>Obrigado por realizar seu pedido no Restaurante Nordestino! 🌵🍛</p>
+        <p>Fique de olho no seu WhatsApp! Entraremos em contato para confirmar as coordenadas do pedido. 📱</p>
+        <p>Escolha uma das opções abaixo:</p>
+        <div class="finalizar-opcoes">
+            <button id="voltar-inicio">Voltar ao Início</button>
+            <button id="voltar-cardapio">Voltar ao Cardápio</button>
+            <button id="cancelar-pedido">Cancelar Pedido</button>
+        </div>
+    </div>
+</div>
+<script>
+    document.getElementById("enter-button").addEventListener("click", function () {
+        document.getElementById("splash-screen").style.display = "none"; // Esconde a splash screen
+        document.getElementById("pedido-modal").style.display = "flex"; // Exibe o modal de pedido
+    });
+
+    document.getElementById("fechar-modal").addEventListener("click", function () {
+        document.getElementById("pedido-modal").style.display = "none"; // Esconde o modal
+        document.getElementById("splash-screen").style.display = "flex"; // Exibe a splash screen
+    });
+
+    // Evento para o botão "Finalizar Pedido"
+    const pedidoForm = document.getElementById("pedido-form");
+    pedidoForm.addEventListener("submit", (event) => {
+        event.preventDefault();
+
+        // Esconde o modal de pedido
+        document.getElementById("pedido-modal").style.display = "none";
+
+        // Exibe o modal de finalização
+        document.getElementById("finalizar-modal").style.display = "flex";
+    });
+
+    // Botão para voltar ao início
+    document.getElementById("voltar-inicio").addEventListener("click", () => {
+        document.getElementById("finalizar-modal").style.display = "none"; // Esconde o modal de finalização
+        document.getElementById("splash-screen").style.display = "flex"; // Volta para a splash screen
+    });
+
+    // Botão para voltar ao cardápio
+    document.getElementById("voltar-cardapio").addEventListener("click", () => {
+        document.getElementById("finalizar-modal").style.display = "none"; // Esconde o modal de finalização
+        document.getElementById("pedido-modal").style.display = "flex"; // Volta para o modal de pedido
+    });
+
+    // Botão para cancelar o pedido
+    document.getElementById("cancelar-pedido").addEventListener("click", () => {
+        const motivo = prompt("Por favor, informe o motivo do cancelamento do pedido:");
+        
+        if (motivo) {
+            alert(`Pedido cancelado com o motivo: "${motivo}"`); // Exibe o motivo do cancelamento
+
+            // Reseta o formulário de pedido
+            const pedidoForm = document.getElementById("pedido-form");
+            pedidoForm.reset();
+
+            // Esconde o modal de finalização
+            document.getElementById("finalizar-modal").style.display = "none";
+
+            // Retorna à página principal (splash screen)
+            document.getElementById("splash-screen").style.display = "flex";
+
+            // Esconde o modal de pedido, caso esteja visível
+            document.getElementById("pedido-modal").style.display = "none";
+        } else {
+            alert("O cancelamento foi cancelado, pois nenhum motivo foi informado."); // Caso o usuário não informe o motivo
+        }
+    });
+
+    // Animação para os elementos da splash screen
+    window.addEventListener("load", function () {
+        const splashTitle = document.querySelector("#splash-screen h1");
+        const splashDescription = document.querySelector(".splash-description");
+        const splashButton = document.querySelector("#enter-button");
+        const contactInfo = document.querySelector(".contact-info");
+
+        // Define as animações com atraso
+        setTimeout(() => {
+            splashTitle.style.transform = "translateY(0)";
+            splashTitle.style.opacity = "1";
+        }, 300);
+
+        setTimeout(() => {
+            splashDescription.style.transform = "translateY(0)";
+            splashDescription.style.opacity = "1";
+        }, 600);
+
+        setTimeout(() => {
+            splashButton.style.transform = "translateY(0)";
+            splashButton.style.opacity = "1";
+        }, 900);
+
+        setTimeout(() => {
+            contactInfo.style.transform = "translateY(0)";
+            contactInfo.style.opacity = "1";
+        }, 1200);
+    });
+
+    // Animação para os itens do cardápio
+    const itensCardapio = document.querySelectorAll(".itens label");
+    itensCardapio.forEach((item, index) => {
+        setTimeout(() => {
+            item.style.opacity = "1";
+            item.style.transform = "translateY(0)";
+            item.style.animation = "fadeInUp 0.5s ease";
+        }, index * 100); // Animação em cascata
+    });
+
+    // Animação para os botões
+    const botoes = document.querySelectorAll("button");
+    botoes.forEach((botao) => {
+        botao.addEventListener("mouseover", () => {
+            botao.style.transform = "scale(1.1)";
+            botao.style.boxShadow = "0px 8px 16px rgba(0, 0, 0, 0.3)";
+        });
+
+        botao.addEventListener("mouseout", () => {
+            botao.style.transform = "scale(1)";
+            botao.style.boxShadow = "0px 4px 6px rgba(0, 0, 0, 0.2)";
+        });
+    });
+
+    // Animação para o modal de finalização
+    document.getElementById("finalizar-pedido").addEventListener("click", function (event) {
+        event.preventDefault(); // Impede o envio padrão do formulário
+
+        // Captura os dados do formulário
+        const nome = document.getElementById("nome").value;
+        const telefone = document.getElementById("telefone").value;
+        const endereco = document.getElementById("endereco").value;
+
+        // Captura os itens selecionados e suas quantidades
+        const itens = document.querySelectorAll('input[name="item"]:checked');
+        let listaPedidos = "";
+        let erroQuantidade = false;
+
+        itens.forEach((item) => {
+            const quantidadeInput = item.parentElement.querySelector('input[type="number"]');
+            const quantidade = quantidadeInput ? quantidadeInput.value : 0;
+
+            // Verifica se a quantidade foi preenchida
+            if (!quantidade || quantidade <= 0) {
+                erroQuantidade = true;
+                quantidadeInput.style.border = "2px solid red"; // Destaca o campo com erro
+            } else {
+                quantidadeInput.style.border = ""; // Remove o destaque se estiver correto
+                listaPedidos += `- ${item.value} (Qtd: ${quantidade})%0A`; // Formata para o WhatsApp
+            }
+        });
+
+        // Exibe mensagem de erro se alguma quantidade estiver inválida
+        if (erroQuantidade) {
+            alert("Por favor, insira a quantidade para todos os itens selecionados.");
+            return;
+        }
+
+        // Verifica se há itens selecionados
+        if (listaPedidos === "") {
+            alert("Por favor, selecione pelo menos um item para o pedido.");
+            return;
+        }
+
+        // Número do WhatsApp do restaurante
+        const numeroWhatsApp = "5521985856965"; // Número real do WhatsApp (código do país + código da área + número)
+
+        // Mensagem formatada para o WhatsApp
+        const mensagem = `*Novo Pedido*%0A%0A` +
+            `*Nome:* ${nome}%0A` +
+            `*Telefone:* ${telefone}%0A` +
+            `*Endereço:* ${endereco}%0A%0A` +
+            `*Itens do Pedido:*%0A${listaPedidos}%0A` +
+            `*Obrigado por escolher o Restaurante Nordestino! 🌵🍛*`;
+
+        // Gera o link do WhatsApp
+        const linkWhatsApp = `https://wa.me/${numeroWhatsApp}?text=${mensagem}`;
+
+        // Redireciona para o WhatsApp do cliente
+        window.open(linkWhatsApp, "_blank");
+    });
+
+    const checkboxes = document.querySelectorAll('input[name="item"]');
+    const contador = document.getElementById("contador-itens");
+
+    checkboxes.forEach((checkbox) => {
+        checkbox.addEventListener("change", () => {
+            const selecionados = document.querySelectorAll('input[name="item"]:checked').length;
+            contador.textContent = `Itens Selecionados: ${selecionados}`;
+        });
+    });
+
+    const botaoResumo = document.getElementById("finalizar-pedido");
+    botaoResumo.addEventListener("click", () => {
+        const itensSelecionados = document.querySelectorAll('input[name="item"]:checked');
+        let resumo = "Resumo do Pedido:\n";
+
+        itensSelecionados.forEach((item) => {
+            const quantidade = item.parentElement.querySelector('input[type="number"]').value;
+            resumo += `- ${item.value} (Qtd: ${quantidade})\n`;
+        });
+
+        alert(resumo);
+    });
+
+    const selecionarTodos = document.getElementById("selecionar-todos");
+    selecionarTodos.addEventListener("click", () => {
+        const checkboxes = document.querySelectorAll('input[name="item"]');
+        checkboxes.forEach((checkbox) => {
+            checkbox.checked = true;
+            const quantidadeInput = checkbox.parentElement.querySelector('input[type="number"]');
+            quantidadeInput.disabled = false;
+        });
+    });
+</script>
+</body>
+</html>
